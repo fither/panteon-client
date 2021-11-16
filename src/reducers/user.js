@@ -13,25 +13,20 @@ export default function userReducer(state = initial_state, action) {
         users: action.users
       }
     case types.INCREASE:
-      const increasedUser = state.users.find((u) => u._id === action.id);
-      Object.assign(
-        increasedUser,
-        { money: action.newValue }
-      )
-      console.log(state.users);
+      const usersStateIncrease = [...state.users];
+      usersStateIncrease.find((u) => u._id === action.id).money = action.newValue;
+      usersStateIncrease.sort((a,b ) => { return b.money - a.money});
       return {
         ...state,
-        users: state.users
+        users: usersStateIncrease
       }
     case types.DECREASE:
-      const decreasedUser = state.users.find((u) => u._id === action.id);
-      Object.assign(
-        decreasedUser,
-        { money: action.newValue }
-      )
+      const usersStateDecrease = [...state.users];
+      usersStateDecrease.find((u) => u._id === action.id).money = action.newValue;
+      usersStateDecrease.sort((a,b ) => { return b.money - a.money});
       return {
         ...state,
-        users: state.users
+        users: usersStateDecrease
       }
     case types.LOADING:
       return {

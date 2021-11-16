@@ -8,9 +8,6 @@ export function fetch() {
     await Axios.get('/users')
     .then((response) => {
       if(response.data) {
-        response.data.sort((a, b) => {
-          return b.money - a.money;
-        });
         dispatch(creators.fetch({users: response.data}));
       }
     });
