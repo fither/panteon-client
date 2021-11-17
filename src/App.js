@@ -1,18 +1,18 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actions from './actions/user';
+import * as actions from './actions/player';
 
 import './App.css';
 import { Table } from 'react-bootstrap';
 
 function App(props) {
   useEffect(() => {
-    fetchUsers();
+    fetchPlayers();
     // eslint-disable-next-line
   }, []);
 
-  const fetchUsers = () => {
+  const fetchPlayers = () => {
     props.actions.fetch();
   }
 
@@ -22,9 +22,11 @@ function App(props) {
         <Table>
           <thead>
             <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>money</th>
+              <th>Country</th>
+              <th>Username</th>
+              <th>Rank</th>
+              <th>Money</th>
+              <th>Daily Diff</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -36,29 +38,35 @@ function App(props) {
                   Loading...
                 </td>
               </tr> :
-              props.users && props.users.length ? 
-              props.users.map((user) => {
+              props.players && props.players.length ? 
+              props.players.map((player, index) => {
                 return (
-                  <tr key={user._id}>
+                  <tr key={player._id}>
                     <td>
-                      { user._id }
+                      { player.country }
                     </td>
                     <td>
-                      { user.name }
+                      { player.name }
                     </td>
                     <td>
-                      { user.money }
+                      { index + 1 }
+                    </td>
+                    <td>
+                      { player.weeklyValue }
+                    </td>
+                    <td>
+                      { player.dailyValue }
                     </td>
                     <td>
                       <button
                         className="action inc"
-                        onClick={() => props.actions.increase(user._id)}
+                        onClick={() => props.actions.increase(player._id)}
                       >
                         +
                       </button>
                       <button
                         className="action dec"
-                        onClick={() => props.actions.decrease(user._id)}
+                        onClick={() => props.actions.decrease(player._id)}
                       >
                         -
                       </button>
@@ -81,8 +89,8 @@ function App(props) {
 
 function mapStateToProps(state) {
   return {
-    users: state.user.users,
-    isLoading: state.user.isLoading
+    players: state.player.players,
+    isLoading: state.player.isLoading
   }
 }
 

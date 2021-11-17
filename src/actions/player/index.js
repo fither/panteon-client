@@ -5,10 +5,10 @@ export function fetch() {
   return async (dispatch) => {
     dispatch(creators.loading(true));
 
-    await Axios.get('/users')
+    await Axios.get('/players')
     .then((response) => {
       if(response.data) {
-        dispatch(creators.fetch({users: response.data}));
+        dispatch(creators.fetch({players: response.data}));
       }
     });
 
@@ -24,9 +24,13 @@ export function increase(id) {
     )
     .then((response) => {
       if(response.data) {
+        const weeklyValue = response.data.weeklyValue;
+        const dailyValue = response.data.dailyValue;
+
         dispatch(creators.increase({
           id: id,
-          newValue: response.data
+          weeklyValue,
+          dailyValue
         }))
       }
     })
@@ -40,10 +44,16 @@ export function decrease(id) {
       { id: id }
     )
     .then((response) => {
-      dispatch(creators.decrease({
-        id,
-        newValue: response.data
-      }))
+      if(response.data) {
+        const weeklyValue = response.data.weeklyValue;
+        const dailyValue = response.data.dailyValue;
+
+        dispatch(creators.decrease({
+          id,
+          weeklyValue,
+          dailyValue
+        }));
+      }
     })
   }
 }

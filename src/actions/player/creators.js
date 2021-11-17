@@ -1,19 +1,21 @@
 import types from './types';
 
 const creators = {
-  fetch: ({users}) => ({
-    type: types.FETCH_USERS,
-    users,
+  fetch: ({players}) => ({
+    type: types.FETCH_PLAYERS,
+    players,
   }),
-  increase: ({id, newValue}) => ({
+  increase: ({id, weeklyValue, dailyValue}) => ({
     type: types.INCREASE,
     id,
-    newValue
+    weeklyValue,
+    dailyValue
   }),
-  decrease: ({id, newValue}) => ({
+  decrease: ({id, weeklyValue, dailyValue}) => ({
     type: types.DECREASE,
     id,
-    newValue
+    weeklyValue,
+    dailyValue
   }),
   loading: (isLoading) => ({
     type: types.LOADING,
