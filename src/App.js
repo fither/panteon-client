@@ -48,7 +48,19 @@ function App(props) {
           <GridColumn field="country"></GridColumn>
           <GridColumn field="name"></GridColumn>
           <GridColumn field="weeklyValue"></GridColumn>
-          <GridColumn field="dailyValue"></GridColumn>
+          <GridColumn 
+            field="dailyValue"
+            cell={(data) => (
+              <td 
+                style={{ 
+                  'color': data.dataItem.weeklyValue > 0 ? 'green' :
+                  data.dataItem.weeklyValue === 0 ? 'yellow' : 'red' 
+                }}
+              >
+                { data.dataItem.weeklyValue }
+              </td>
+            )}
+          ></GridColumn>
           <GridColumn 
             field="actions"
             cell={(data) => (
