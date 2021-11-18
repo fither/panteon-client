@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from './actions/player';
 
-import { process } from '@progress/kendo-data-query';
+// import { process } from '@progress/kendo-data-query';
 import { Grid, GridColumn } from '@progress/kendo-react-grid';
 import { Button } from "@progress/kendo-react-buttons";
 
