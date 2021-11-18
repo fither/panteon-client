@@ -3,8 +3,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from './actions/player';
 
+import { process } from '@progress/kendo-data-query';
+import { Grid, GridColumn } from '@progress/kendo-react-grid';
+import { Button } from "@progress/kendo-react-buttons";
+
+import '@progress/kendo-theme-default/dist/all.css';
+
 import './App.css';
-import { Table } from 'react-bootstrap';
 
 function App(props) {
   useEffect(() => {
@@ -16,76 +21,55 @@ function App(props) {
     props.actions.fetch();
   }
 
+  const increase = (id) => {
+    props.actions.increase(id)
+  }
+
+  const decrease = (id) => {
+    props.actions.decrease(id);
+  }
+
+  const LoadingPanel = 
+    <div className="k-loading-mask">
+      <span className="k-loading-text">Loading</span>
+      <div className="k-loading-image" />
+      <div className="k-loading-color" />
+    </div>;
+
   return (
     <div className="App">
-      <div className="table-div">
-        <Table>
-          <thead>
-            <tr>
-              <th>Country</th>
-              <th>Username</th>
-              <th>Rank</th>
-              <th>Money</th>
-              <th>Daily Diff</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              props.isLoading ?
-              <tr>
-                <td colSpan={ 4 }>
-                  Loading...
-                </td>
-              </tr> :
-              props.players && props.players.length ? 
-              props.players.map((player, index) => {
-                return (
-                  <tr key={player._id}>
-                    <td>
-                      { player.country }
-                    </td>
-                    <td>
-                      { player.name }
-                    </td>
-                    <td>
-                      { index + 1 }
-                    </td>
-                    <td>
-                      { player.weeklyValue }
-                    </td>
-                    <td>
-                      { player.dailyValue }
-                    </td>
-                    <td>
-                      <button
-                        className="action inc"
-                        onClick={() => props.actions.increase(player._id)}
-                      >
-                        +
-                      </button>
-                      <button
-                        className="action dec"
-                        onClick={() => props.actions.decrease(player._id)}
-                      >
-                        -
-                      </button>
-                    </td>
-                  </tr>
-                )
-              }) :
-              <tr>
-                <td colSpan={ 4 }>
-                  No Data
-                </td>
-              </tr>
-            }
-          </tbody>
-        </Table>
-      </div>
+      { 
+        props.isLoading ?
+        LoadingPanel :
+        <Grid
+          data={props.players}
+          style={{ height: '500px' }}
+        >
+          <GridColumn field="country"></GridColumn>
+          <GridColumn field="name"></GridColumn>
+          <GridColumn field="weeklyValue"></GridColumn>
+          <GridColumn field="dailyValue"></GridColumn>
+          <GridColumn 
+            field="actions"
+            cell={(data) => (
+              <td>
+                <Button
+                  icon="plus"
+                  onClick={() => increase(data.dataItem._id)}
+                ></Button>
+                <Button
+                  icon="minus"
+                  onClick={() => decrease(data.dataItem._id)}
+                ></Button>
+              </td>
+            )}
+          ></GridColumn>
+        </Grid>
+      }
     </div>
   );
 }
+
 
 function mapStateToProps(state) {
   return {
