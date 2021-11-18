@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from './actions/player';
+import Logo from './images/logo.png';
 
 // import { process } from '@progress/kendo-data-query';
 import { Grid, GridColumn } from '@progress/kendo-react-grid';
@@ -38,46 +39,51 @@ function App(props) {
 
   return (
     <div className="App">
-      { 
-        props.isLoading ?
-        LoadingPanel :
-        <Grid
-          data={props.players}
-          style={{ height: '500px' }}
-        >
-          <GridColumn field="country"></GridColumn>
-          <GridColumn field="name"></GridColumn>
-          <GridColumn field="weeklyValue"></GridColumn>
-          <GridColumn 
-            field="dailyValue"
-            cell={(data) => (
-              <td 
-                style={{ 
-                  'color': data.dataItem.weeklyValue > 0 ? 'green' :
-                  data.dataItem.weeklyValue === 0 ? 'yellow' : 'red' 
-                }}
-              >
-                { data.dataItem.weeklyValue }
-              </td>
-            )}
-          ></GridColumn>
-          <GridColumn 
-            field="actions"
-            cell={(data) => (
-              <td>
-                <Button
-                  icon="plus"
-                  onClick={() => increase(data.dataItem._id)}
-                ></Button>
-                <Button
-                  icon="minus"
-                  onClick={() => decrease(data.dataItem._id)}
-                ></Button>
-              </td>
-            )}
-          ></GridColumn>
-        </Grid>
-      }
+      <div className="header">
+        <img src={Logo} alt="logo"></img>
+      </div>
+      <div className="content">
+        { 
+          props.isLoading ?
+          LoadingPanel :
+          <Grid
+            data={props.players}
+            style={{ height: '500px' }}
+          >
+            <GridColumn field="country"></GridColumn>
+            <GridColumn field="name"></GridColumn>
+            <GridColumn field="weeklyValue"></GridColumn>
+            <GridColumn 
+              field="dailyValue"
+              cell={(data) => (
+                <td 
+                  style={{ 
+                    'color': data.dataItem.weeklyValue > 0 ? 'green' :
+                    data.dataItem.weeklyValue === 0 ? '#dece00' : 'red' 
+                  }}
+                >
+                  { data.dataItem.weeklyValue }
+                </td>
+              )}
+            ></GridColumn>
+            <GridColumn 
+              field="actions"
+              cell={(data) => (
+                <td>
+                  <Button
+                    icon="plus"
+                    onClick={() => increase(data.dataItem._id)}
+                  ></Button>
+                  <Button
+                    icon="minus"
+                    onClick={() => decrease(data.dataItem._id)}
+                  ></Button>
+                </td>
+              )}
+            ></GridColumn>
+          </Grid>
+        }
+      </div>
     </div>
   );
 }
